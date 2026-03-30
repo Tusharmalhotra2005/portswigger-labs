@@ -37,8 +37,7 @@ client sends.
 
 Log in with credentials: `wiener` / `peter`
 
-![Login page with credentials filled in](./screenshots/01-login.png)
-
+![Login page with credentials filled in](./01-login.png)
 ---
 
 ### Step 2 — Add jacket to cart and intercept
@@ -49,7 +48,7 @@ The raw request will look like this:
     POST /cart HTTP/2
     productId=1&redir=PRODUCT&quantity=1&price=133700
 
-![Burp intercept showing original price=133700](./screenshots/02-intercept-request.png)
+![Burp intercept showing original price=133700](./02-intercept-request.png)
 
 ---
 
@@ -59,7 +58,8 @@ In the Burp intercept panel, change the price value:
 
     price=133700  →  price=1
 
-![Burp intercept with price changed to 1](./screenshots/03-modified-price.png)
+![Burp intercept with price changed to 1](./03-modified-price.png)
+
 
 ---
 
@@ -67,15 +67,14 @@ In the Burp intercept panel, change the price value:
 
 Click **Forward** in Burp. The cart now shows the manipulated price.
 
-![Shopping cart showing the jacket at modified price](./screenshots/04-cart-modified-price.png)
-
+![Shopping cart showing the jacket at modified price](./04-cart-modified-price.png)
 ---
 
 ### Step 5 — Place the order
 
 Click **Place order**. The lab solved banner appears.
 
-![Green lab solved confirmation banner](./screenshots/05-lab-solved.png)
+![Green lab solved confirmation banner](./05-lab-solved.png)
 
 ---
 
