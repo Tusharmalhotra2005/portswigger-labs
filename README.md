@@ -1,5 +1,5 @@
-# portswigger-labs
-PortSwigger Web Security Academy — Lab Solutions &amp; Writeups
+## 📂 Repository Structure
+```
 portswigger-labs/
 ├── README.md                        ← You are here
 ├── business-logic-vulnerabilities/
@@ -37,3 +37,4 @@ portswigger-labs/
 │   └── lab-11-encryption-oracle/
 │       ├── README.md
 │       └── screenshots/
+```
