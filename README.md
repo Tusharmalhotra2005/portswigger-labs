@@ -1,9 +1,9 @@
 ## 📂 Repository Structure
 ```
 portswigger-labs/
-├── README.md                        ← You are here
+├── README.md                        
 ├── business-logic-vulnerabilities/
-│   ├── README.md                    ← Category overview
+│   ├── README.md                    
 │   ├── lab-01-excessive-trust/
 │   │   ├── README.md
 │   │   └── screenshots/
