@@ -168,3 +168,59 @@ Click **Place order**. Lab solved!
 ![Green lab solved confirmation banner](./11-lab-solved.png)
 
 ---
+
+## 📸 Screenshots Reference
+
+| File | What it shows |
+|------|---------------|
+| `01-login.png` | Login page with wiener/peter |
+| `02-intercept-add-to-cart.png` | Burp intercept of add to cart POST |
+| `03-send-to-intruder.png` | Right-click Send to Intruder |
+| `04-intruder-positions.png` | Intruder Positions tab with quantity marked |
+| `05-intruder-null-payload.png` | Payloads tab with Null payloads selected |
+| `06-intruder-quantity-99.png` | Positions tab with quantity=99 |
+| `07-intruder-running.png` | Intruder attack in progress |
+| `08-cart-overflow-negative.png` | Cart showing large negative total |
+| `09-repeater-adjust-total.png` | Repeater adding cheap items to adjust |
+| `10-final-cart-total.png` | Cart total between $0–$100 |
+| `11-lab-solved.png` | Green solved banner |
+
+---
+
+## 🔍 Integer Overflow Explained
+
+| Stage | Cart Total |
+|-------|-----------|
+| Start | $1,337.00 |
+| After many adds | $2,147,483,647 (max 32-bit int) |
+| After one more add | overflows → large negative |
+| After cheap item nudge | $0 – $100 ✅ |
+
+The 32-bit signed integer max is **2,147,483,647**.
+Any value above this wraps around to a negative number.
+
+---
+
+## 🏁 Key Takeaway
+
+> Use safe numeric types for financial calculations.
+> Always validate that cart totals stay within expected
+> bounds — never allow negative totals to reach checkout.
+
+---
+
+## 🛡️ Remediation
+
+- Use `BigDecimal` or 64-bit integers for all price calculations
+- Set a server-side maximum quantity per item per order
+- Reject any cart total that is zero or negative before checkout
+- Cap the maximum possible order value server-side
+
+---
+
+## 🔗 References
+
+- [PortSwigger: Business Logic Vulnerabilities](https://portswigger.net/web-security/logic-flaws)
+- [OWASP: Integer Overflow](https://owasp.org/www-community/vulnerabilities/Integer_overflow)
+```
+
