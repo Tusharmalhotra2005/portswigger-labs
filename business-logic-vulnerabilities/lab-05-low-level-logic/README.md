@@ -88,10 +88,10 @@ productId=1&redir=PRODUCT&quantity=§1§
 1. Go to **Payloads** tab
 2. Set **Payload type** to `Null payloads`
 3. Select **Continue indefinitely**
-4. Go to **Settings** tab → set **Max concurrent requests** to `1`
+4. Go to **Resource Pool** tab → set **Max concurrent requests** to `1`
 
 > This will keep sending the request repeatedly, adding
-> the jacket to cart each time with quantity=1 but very fast.
+> the jacket to cart each time with quantity=1 but very slow.
 
 ![Intruder payloads tab configured with null payloads](./05-intruder-null-payload.png)
 
@@ -134,18 +134,17 @@ immediately.
 
 ---
 
-### Step 9 — Add cheap items to bring total to $0–$100
+### Step 9 — Add jackets to bring total to $0–$100
 
-Now use Burp **Repeater** to add a cheap item
-(e.g. `productId=2`, the cheapest product) in small
+Now use Burp **Repeater** to add jackets in small
 quantities to nudge the total up into the $0–$100 range.
 
-Send this request repeatedly in Repeater, adjusting quantity:
-```
-POST /cart HTTP/2
-productId=2&redir=PRODUCT&quantity=1
-```
+perform mathematic calculation to decrease the negative value by adding more jackets
+21240803.96/1337=15886.9139566
+15886/99=160.464646465
 
+We have to add 99 jackets 160 times which is very difficult with repeater, so use generate 160 payloads. After doing this the negative value will become that we cannot add more jackets so we will add another item less than and close to $100.
+Adjust the amount by sending request.
 Check the cart in the browser after each send until the
 total lands between $0 and $100.
 
@@ -169,58 +168,3 @@ Click **Place order**. Lab solved!
 ![Green lab solved confirmation banner](./11-lab-solved.png)
 
 ---
-
-## 📸 Screenshots Reference
-
-| File | What it shows |
-|------|---------------|
-| `01-login.png` | Login page with wiener/peter |
-| `02-intercept-add-to-cart.png` | Burp intercept of add to cart POST |
-| `03-send-to-intruder.png` | Right-click Send to Intruder |
-| `04-intruder-positions.png` | Intruder Positions tab with quantity marked |
-| `05-intruder-null-payload.png` | Payloads tab with Null payloads selected |
-| `06-intruder-quantity-99.png` | Positions tab with quantity=99 |
-| `07-intruder-running.png` | Intruder attack in progress |
-| `08-cart-overflow-negative.png` | Cart showing large negative total |
-| `09-repeater-adjust-total.png` | Repeater adding cheap items to adjust |
-| `10-final-cart-total.png` | Cart total between $0–$100 |
-| `11-lab-solved.png` | Green solved banner |
-
----
-
-## 🔍 Integer Overflow Explained
-
-| Stage | Cart Total |
-|-------|-----------|
-| Start | $1,337.00 |
-| After many adds | $2,147,483,647 (max 32-bit int) |
-| After one more add | overflows → large negative |
-| After cheap item nudge | $0 – $100 ✅ |
-
-The 32-bit signed integer max is **2,147,483,647**.
-Any value above this wraps around to a negative number.
-
----
-
-## 🏁 Key Takeaway
-
-> Use safe numeric types for financial calculations.
-> Always validate that cart totals stay within expected
-> bounds — never allow negative totals to reach checkout.
-
----
-
-## 🛡️ Remediation
-
-- Use `BigDecimal` or 64-bit integers for all price calculations
-- Set a server-side maximum quantity per item per order
-- Reject any cart total that is zero or negative before checkout
-- Cap the maximum possible order value server-side
-
----
-
-## 🔗 References
-
-- [PortSwigger: Business Logic Vulnerabilities](https://portswigger.net/web-security/logic-flaws)
-- [OWASP: Integer Overflow](https://owasp.org/www-community/vulnerabilities/Integer_overflow)
-```
